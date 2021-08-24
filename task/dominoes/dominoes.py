@@ -207,8 +207,16 @@ def print_info():
     print("Stock size:", len(stock_dominoes))
     print("Computer pieces:", len(computer_dominoes))
     print()
-    for domino in domino_snake:
-        print(domino)
+    if len(domino_snake) < 7:
+        for domino in domino_snake:
+            print(domino, end='')
+    else:
+        for i in range(3):
+            print(domino_snake[i], end='')
+        print("...", end='')
+        for i in range(3, 0, -1):
+            print(domino_snake[-i], end='')
+    print()
     print("\nYour pieces:")
     i = 1
     for domino in player_dominoes:
@@ -231,33 +239,6 @@ def check_domino_snake():
             return False
     return True
 
-
-def make_turn(player, turn):
-    global status
-        if player_choice == 0:
-            if len(stock_dominoes) > 0:
-                player_dominoes.append(stock_dominoes.pop(random.randint(0, len(stock_dominoes) - 1)))
-                status = 'computer'
-            else:
-                status = 'draw'
-        elif player_choice < 0:
-            selected_domino = player_dominoes.pop(-player_choice - 1)
-            if len(player_dominoes) == 0:
-                print_info()
-                print("Status: The game is over. You won!")
-                break
-            domino_snake.insert(0, selected_domino)
-            if not check_domino_snake():
-                status = 'draw'
-        else:
-            selected_domino = player_dominoes.pop(player_choice - 1)
-            if len(player_dominoes) == 0:
-                print_info()
-                print("Status: The game is over. You won!")
-                break
-            domino_snake.append(selected_domino)
-            if not check_domino_snake():
-                status = 'draw'
 
 initiation()
 while True:
@@ -282,6 +263,7 @@ while True:
                 print("Status: The game is over. You won!")
                 break
             domino_snake.insert(0, selected_domino)
+            status = 'computer'
             if not check_domino_snake():
                 status = 'draw'
         else:
@@ -291,14 +273,39 @@ while True:
                 print("Status: The game is over. You won!")
                 break
             domino_snake.append(selected_domino)
+            status = 'computer'
             if not check_domino_snake():
                 status = 'draw'
     elif status == 'computer':
         print("Status: Computer is about to make a move. Press Enter to continue...")
         input()
-        computer_turn = random.randint(-len(computer_dominoes), len(computer_dominoes))
-        if computer_turn == 0:
-
+        computer_choice = random.randint(-len(computer_dominoes), len(computer_dominoes))
+        if computer_choice == 0:
+            if len(stock_dominoes) > 0:
+                computer_dominoes.append(stock_dominoes.pop(random.randint(0, len(stock_dominoes) - 1)))
+                status = 'player'
+            else:
+                status = 'draw'
+        elif computer_choice < 0:
+            selected_domino = computer_dominoes.pop(-computer_choice - 1)
+            if len(computer_dominoes) == 0:
+                print_info()
+                print("Status: The game is over. The computer won!")
+                break
+            domino_snake.insert(0, selected_domino)
+            status = 'player'
+            if not check_domino_snake():
+                status = 'draw'
+        else:
+            selected_domino = computer_dominoes.pop(computer_choice - 1)
+            if len(computer_dominoes) == 0:
+                print_info()
+                print("Status: The game is over. You won!")
+                break
+            domino_snake.append(selected_domino)
+            status = 'player'
+            if not check_domino_snake():
+                status = 'draw'
     elif status == 'draw':
         print("Status: The game is over. It's a draw!")
         break
