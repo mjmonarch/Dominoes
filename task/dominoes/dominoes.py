@@ -458,6 +458,10 @@ while True:
                 print_info()
                 print("Status: The game is over. You won!")
                 break
+            if selected_domino[1] != domino_snake[0][0]:
+                a = selected_domino[1]
+                selected_domino[1] = selected_domino[0]
+                selected_domino[0] = a
             domino_snake.insert(0, selected_domino)
             status = 'computer'
             if not check_domino_snake():
@@ -468,6 +472,10 @@ while True:
                 print_info()
                 print("Status: The game is over. You won!")
                 break
+            if selected_domino[0] != domino_snake[-1][1]:
+                a = selected_domino[1]
+                selected_domino[1] = selected_domino[0]
+                selected_domino[0] = a
             domino_snake.append(selected_domino)
             status = 'computer'
             if not check_domino_snake():
@@ -491,6 +499,10 @@ while True:
                 print_info()
                 print("Status: The game is over. The computer won!")
                 break
+            if selected_domino[1] != domino_snake[0][0]:
+                a = selected_domino[1]
+                selected_domino[1] = selected_domino[0]
+                selected_domino[0] = a
             domino_snake.insert(0, selected_domino)
             status = 'player'
             if not check_domino_snake():
@@ -501,6 +513,10 @@ while True:
                 print_info()
                 print("Status: The game is over. You won!")
                 break
+            if selected_domino[0] != domino_snake[-1][1]:
+                a = selected_domino[1]
+                selected_domino[1] = selected_domino[0]
+                selected_domino[0] = a
             domino_snake.append(selected_domino)
             status = 'player'
             if not check_domino_snake():
@@ -510,5 +526,3 @@ while True:
         break
     else:
         print("Status: something went wrong")
-
-TODO rotate domino if it is needed
