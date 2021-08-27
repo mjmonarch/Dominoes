@@ -684,10 +684,9 @@ while True:
                 print("Status: The game is over. You won!")
                 break
             if selected_domino[1] != domino_snake[0][0]:
-                a = selected_domino[1]
-                selected_domino[1] = selected_domino[0]
-                selected_domino[0] = a
-            domino_snake.insert(0, selected_domino)
+                domino_snake.insert(0, (selected_domino[1], selected_domino[0]))
+            else:
+                domino_snake.insert(0, selected_domino)
             status = 'computer'
             if not check_domino_snake():
                 status = 'draw'
@@ -698,10 +697,9 @@ while True:
                 print("Status: The game is over. You won!")
                 break
             if selected_domino[0] != domino_snake[-1][1]:
-                a = selected_domino[1]
-                selected_domino[1] = selected_domino[0]
-                selected_domino[0] = a
-            domino_snake.append(selected_domino)
+                domino_snake.append((selected_domino[1], selected_domino[0]))
+            else:
+                domino_snake.append(selected_domino)
             status = 'computer'
             if not check_domino_snake():
                 status = 'draw'
@@ -729,25 +727,26 @@ while True:
         for domino in computer_dominoes:
             score = number_appearances[domino[0]] + number_appearances[domino[1]]
             computer_dominoes_score[domino] = score
-        computer_dominoes_score = sorted(computer_dominoes_score)
+        computer_dominoes_sorted = sorted(computer_dominoes_score, key=computer_dominoes_score.get, reverse=True)
         # checking dominoes
-        for domino in computer_dominoes_score:
+        for domino in computer_dominoes_sorted:
             if check_domino_left(domino):
                 if domino[1] != domino_snake[0][0]:
-                    a = domino[1]
-                    domino[1] = domino[0]
-                    domino[0] = a
-                domino_snake.insert(0, domino)
+                    domino_snake.insert(0, (domino[1], domino[0]))
+                else:
+                    domino_snake.insert(0, domino)
+                computer_dominoes.remove(domino)
                 status = 'player'
                 if not check_domino_snake():
                     status = 'draw'
                 break
             if check_domino_right(domino):
                 if domino[0] != domino_snake[-1][1]:
-                    a = domino[1]
-                    domino[1] = domino[0]
-                    domino[0] = a
-                domino_snake.append(domino)
+
+                    domino_snake.append((domino[1], domino[0]))
+                else:
+                    domino_snake.append(domino)
+                computer_dominoes.remove(domino)
                 status = 'player'
                 if not check_domino_snake():
                     status = 'draw'
@@ -763,5 +762,3 @@ while True:
         break
     else:
         print("Status: something went wrong")
-
-cannot change tuple - should insert into domino_snake newly created 'rotated' tupple
