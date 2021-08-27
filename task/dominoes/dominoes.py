@@ -630,18 +630,18 @@ def print_info():
     print()
     if len(domino_snake) < 7:
         for domino in domino_snake:
-            print(domino, end='')
+            print(list(domino), end='')
     else:
         for i in range(3):
-            print(domino_snake[i], end='')
+            print(list(domino_snake[i]), end='')
         print("...", end='')
         for i in range(3, 0, -1):
-            print(domino_snake[-i], end='')
+            print(list(domino_snake[-i]), end='')
     print()
     print("\nYour pieces:")
     i = 1
     for domino in player_dominoes:
-        print(i, ":", domino, sep='')
+        print(i, ":", list(domino), sep='')
         i += 1
     print()
 
@@ -706,7 +706,7 @@ while True:
     elif status == 'computer':
         print("Status: Computer is about to make a move. Press Enter to continue...")
         input()
-        check = False
+        finished = False
         # make a dictionary with count of 0, 1, ... in the computer dominoes stack and in the domino snake
         number_appearances = {}
         for i in range(7):
@@ -736,6 +736,11 @@ while True:
                 else:
                     domino_snake.insert(0, domino)
                 computer_dominoes.remove(domino)
+                if len(computer_dominoes) == 0:
+                    print_info()
+                    print("Status: The game is over. The computer won!")
+                    finished = True
+                    break
                 status = 'player'
                 if not check_domino_snake():
                     status = 'draw'
@@ -747,6 +752,11 @@ while True:
                 else:
                     domino_snake.append(domino)
                 computer_dominoes.remove(domino)
+                if len(computer_dominoes) == 0:
+                    print_info()
+                    print("Status: The game is over. The computer won!")
+                    finished = True
+                    break
                 status = 'player'
                 if not check_domino_snake():
                     status = 'draw'
@@ -757,6 +767,8 @@ while True:
                 status = 'player'
             else:
                 status = 'draw'
+        if finished:
+            break
     elif status == 'draw':
         print("Status: The game is over. It's a draw!")
         break
